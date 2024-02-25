@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>LLM Playground</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 200px; /* Increased width to accommodate buttons */
+  background-color: white; /*Set background color to white */
+  
+  color: #555;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%); /* Center the popup horizontally */
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+    #exampleFormControlTextarea1{
+        width: 100%;
+        height: 11em;
+        resize: none;
+    }
+    .to-text{
+        margin-top: 10px;
+    }
+  </style>
+  </head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Playground</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link get-history" style="cursor: pointer;">History</a>
+          </li> 
+        </ul>
+        
+      </div>
+      <span class="navbar-text">
+        <a href="https://github.com">
+          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="25" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+          </svg>
+      </a>
+      
+      <div class="popup" onclick="myFunction()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+          <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>          
+        </svg>
+        <span class="popuptext" id="myPopup">
+          <a href="/sign-up"><button class = "btn-primary mt-3 mb-3 mr-3 pt-1 pb-1 pl-2 pr-2" style="border-radius: 8px;" >Sign Up</button></a>
+          <a href="/sign-in"><button class = "btn-primary pt-1 pb-1 pl-2 pr-2" style="border-radius: 8px;" >Login</button></a>
+        </span>
+      </div>
+      </span>
+    </div>
+    
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+        <!-- Left column (Chatbox) -->
+        <div class="col-md-6">
+            <div class="card" style="width: 100%; height: 400px;">
+                <div class="card-body">
+                    <!-- Chat messages go here -->
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control from-text" spellcheck="true" id="exampleFormControlTextarea1" placeholder="Enter Text" rows="3"></textarea>
+                            <textarea class="form-control to-text" id="exampleFormControlTextarea1" placeholder="Response" readonly disabled rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column (Additional information) -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="container mt-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dropdown">
+                                    <select class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" name="Models">
+                                      <option value="gpt-3.5">gpt-3.5</option>
+                                      <option value="gpt-3.5">gpt-3.5 turbo</option>
+                                      <option value="gpt-3.5">gpt-4</option>
+                                      <option value="gpt-3.5">gpt-4 turbo</option>
+                                      <option value = "text-adda-001">text-adda-001</option>
+                                      <option value = "text-babbage-001">text-babbage-001</option>
+                                      <option value = "text-curie-001">text-curie-001</option>
+                                      <option value = "text-davinci-002">text-davinci-002</option>
+                                      <option value = "text-davinci-002">text-davinci-003</option>
+                                      <option value = "claude-2">claude-2</option>
+                                      <option value = "luminous-base">luminous-base</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-3 mb-3">
+                    <div class="card ">
+                        <div class="card-body">
+                            <label for="customRange1" class="form-label">Maximum Length</label>
+                            <input type="range" class="form-range" id="customRange1" min="1" max="2048" step="1" oninput="updateValue('rangeValue1', this.value)">
+                            <p>Current Value: <span id="rangeValue1">1024</span></p>
+                    
+                            <label for="customRange2" class="form-label">Temperature</label>
+                            <input type="range" class="form-range" id="customRange2" min="0.01" max="5" step="0.01" oninput="updateValue('rangeValue2', this.value)">
+                            <p>Current Value: <span id="rangeValue2">2.5</span></p>
+                    
+                            <label for="customRange3" class="form-label" >Top P</label>
+                            <input type="range" class="form-range" id="customRange3" min="0.01" max="1" step="0.01" oninput="updateValue('rangeValue3', this.value)">
+                            <p>Current Value: <span id="rangeValue3">0.5</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <button class="btn btn-secondary get-response" type="submit">Submit</button>
+<button class="btn btn-secondary re-generate" type="submit">Regenerate</button>
+<a href="/"><button class="btn btn-secondary" type="submit">Clear</button></a>
+<button class="btn btn-secondary save" type="submit">Save</button>
+</div>
+    
+
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  function updateValue(elementId, newValue) {
+    document.getElementById(elementId).innerText = newValue;
+  }
+const fromText = document.querySelector(".from-text"),
+toText = document.querySelector(".to-text"),
+translateBtn = document.querySelector(".get-response"),
+regenerateBtn = document.querySelector(".re-generate");
+
+let userText = null;
+const API_KEY = "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";
+
+document.querySelector(".save").addEventListener("click", function (){
+  if(!userText && toText == "[object HTMLTextAreaElement]") return;
+  alert("Please login to save.");
+});
+
+document.querySelector(".get-history").addEventListener("click", function (){
+  alert("Please login to view saved files.");
+});
+/*const getChatResponse = async (incomingChatDiv) => {
+  const API_URL = "https://api.openai.com/v1/completions";
+  // Define the properties and data for the API request
+  const requestOptions = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
+          model: "text-davinci-003",
+          prompt: userText,
+          max_tokens: 2048,
+          temperature: 0.2,
+          n: 1,
+          stop: null
+      })
+  }
+  // Send POST request to API, get response and set the reponse as paragraph element text
+  try {
+      const response = await (await fetch(API_URL, requestOptions)).json();
+      toText.value = response.choices[0].text.trim();
+  } catch (error) { // Add error class to the paragraph element and set error text
+    console.log(error);
+      //pElement.classList.add("error");
+      toText.value = "Too many requests. Please try again.";
+  }
+}*/
+
+translateBtn.addEventListener("click", () => {
+  userText = fromText.value.trim().toLowerCase();
+  if(!userText) return;
+  if(userText == "hello") toText.value = "Hello, How can I help you today.";
+  //getChatResponse();
+});
+
+regenerateBtn.addEventListener("click", () => {
+  userText = fromText.value.trim().toLowerCase();
+  if(!userText) return;
+  toText.value = "";
+  setTimeout(() => {  if(userText == "hello") toText.value = "Hello, How can I help you today."; }, 500);
+  //getChatResponse();
+});
+
+function myFunction() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+
+  var rect = popup.getBoundingClientRect();
+  if (rect.right > window.innerWidth) {
+    popup.style.left = "auto";
+    popup.style.right = "0";
+    popup.style.transform = "translateX(0)";
+  }
+}
+
+</script>
+</body>
+
+
+
+</html>
